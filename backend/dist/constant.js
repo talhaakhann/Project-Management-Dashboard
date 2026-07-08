@@ -1,4 +1,4 @@
-export const DB_NAME = "lms-app";
+export const DB_NAME = "project-management-app";
 export const UserRolesEnum = {
     ADMIN: "ADMIN",
     USER: "USER",

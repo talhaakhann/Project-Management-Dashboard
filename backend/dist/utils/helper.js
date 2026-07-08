@@ -12,6 +12,6 @@ export const getStaticLocalPath = (req, fileName) => {
     return `${req.protocol}://${req.get("host")}/${fileName}`;
 };
 export const getLocalPath = (fileName) => {
-    return `public/images/${fileName}`;
+    return `public/temp/${fileName}`;
 };
 //# sourceMappingURL=helper.js.map

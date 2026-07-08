@@ -9,11 +9,11 @@ const createTaskSchema = z.object({
         .string()
         .min(8, "name must be at least 8 characters.")
         .max(300, "name must be at least 300 characters."),
-    dueDate: z.date(),
+    dueDate: z.coerce.date(), //send data as string
     status: z.enum(TaskStatusEnum),
     priority: z.enum(TaskPriorityEnum),
-    assigneesIds: z.array(z.string()),
-    tag: z.string(),
+    assignees: z.array(z.string()),
+    tags: z.array(z.string()),
 });
 const updateTaskSchema = z.object({
     title: z
@@ -26,7 +26,7 @@ const updateTaskSchema = z.object({
         .min(8, "name must be at least 8 characters.")
         .max(300, "name must be at least 300 characters.")
         .optional(),
-    dueDate: z.date(),
+    dueDate: z.coerce.date(),
     status: z.enum(TaskStatusEnum).optional(),
     priority: z.enum(TaskPriorityEnum).optional(),
 });

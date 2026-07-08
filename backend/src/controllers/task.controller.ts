@@ -152,14 +152,14 @@ export const getAllProjectTasks = asyncHandler(
   async (req: Request, res: Response) => {
     const { projectId } = req.params;
 
-    const project = await Project.findById(projectId);
+    const existedProject = await Project.findById(projectId);
 
-    if (!project) {
+    if (!existedProject) {
       throw new ApiError(404, "Project ID is requied");
 
     }
 
-    const isProjectMember = project.members.some(
+    const isProjectMember = existedProject.members.some(
       (id) => id.toString() === req.user._id.toString(),
     );
 
@@ -170,7 +170,7 @@ export const getAllProjectTasks = asyncHandler(
     const tasks = await Task.aggregate([
       {
         $match: {
-          projectId:new mongoose.Types.ObjectId(projectId),
+          projectId:new mongoose.Types.ObjectId(existedProject._id),
         },
       },
       { $sort: { createdAt: -1 } },

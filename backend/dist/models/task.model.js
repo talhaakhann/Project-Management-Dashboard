@@ -1,6 +1,6 @@
 import mongoose, { Document, Types, Model, Schema } from "mongoose";
 export const taskSchema = new Schema({
-    name: {
+    title: {
         type: String,
         unique: true,
         required: true,
@@ -22,10 +22,11 @@ export const taskSchema = new Schema({
         required: true,
         default: Date.now(),
     },
-    tags: {
-        type: [String]
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
     },
-    project: {
+    projectId: {
         type: Schema.Types.ObjectId,
         ref: "Project",
         required: true,
@@ -36,6 +37,9 @@ export const taskSchema = new Schema({
             ref: "User",
         },
     ],
+    tags: {
+        type: [String]
+    },
 }, { timestamps: true });
 export const Task = mongoose.model("Task", taskSchema);
 //# sourceMappingURL=task.model.js.map

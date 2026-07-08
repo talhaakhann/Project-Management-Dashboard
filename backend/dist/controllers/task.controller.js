@@ -1,16 +1,16 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Project } from "../models/project.model.js";
 import mongoose from "mongoose";
 import { Task } from "../models/task.model.js";
-import { TaskPriorityEnum, TaskStatusEnum } from "../types/enums/task.enum.js";
+import { TaskStatusEnum } from "../types/enums/task.enum.js";
 export const createTask = asyncHandler(async (req, res) => {
-    const { name, description, status, priority, dueDate, assigneeIds, tags } = req.body;
+    const { title, description, status, priority, dueDate, assignees, tags } = req.body;
     const { projectId } = req.params;
+    const userId = req.user._id;
     if (!projectId) {
-        throw new ApiError(400, "Project ID is required");
+        throw new ApiError(404, "Project ID is required");
     }
     const project = await Project.findOne({
         _id: projectId,
@@ -19,14 +19,21 @@ export const createTask = asyncHandler(async (req, res) => {
     if (!project) {
         throw new ApiError(404, "Project not found or access denied");
     }
+    const existTask = await Task.findOne({
+        title
+    });
+    if (existTask) {
+        throw new ApiError(400, "Task with this name already exist");
+    }
     const createdTask = await Task.create({
-        name,
+        title,
         description,
         status: status || TaskStatusEnum.TODO,
         priority,
         dueDate,
-        project: new mongoose.Types.ObjectId(projectId),
-        assignees: assigneeIds,
+        createdBy: userId,
+        projectId: projectId,
+        assignees,
         tags,
     });
     if (!createdTask) {
@@ -41,12 +48,16 @@ export const deleteTask = asyncHandler(async (req, res) => {
     if (!taskId) {
         throw new ApiError(400, "Task ID is required");
     }
-    const task = await Task.findOne({
-        _id: taskId,
-        assignees: req.user._id,
-    });
+    const task = await Task.findById(taskId);
     if (!task) {
-        throw new ApiError(404, "Task not found or access denied");
+        throw new ApiError(404, "Task not found ");
+    }
+    const isAssignee = task.assignees.some((id) => id.toString() === req.user._id.toString());
+    const isTaskCreater = await Task.findOne({
+        createdBy: req.user._id,
+    });
+    if (!isTaskCreater && !isAssignee) {
+        throw new ApiError(409, "Access denied");
     }
     const deleteTask = await Task.findByIdAndDelete(taskId);
     if (!deleteTask) {
@@ -57,21 +68,25 @@ export const deleteTask = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "Task deleted successfully"));
 });
 export const updateTaskDetails = asyncHandler(async (req, res) => {
-    const { name, description, status, priority, dueDate } = req.body;
+    const { title, description, status, priority, dueDate } = req.body;
     const { taskId } = req.params;
     if (!taskId) {
         throw new ApiError(400, "Task ID is required");
     }
-    const task = await Task.findOne({
-        _id: taskId,
-        assignees: req.user._id,
-    });
+    const task = await Task.findById(taskId);
     if (!task) {
-        throw new ApiError(404, "Task not found or access denied");
+        throw new ApiError(404, "Task not found ");
+    }
+    const isAssignee = task.assignees.some((id) => id.toString() === req.user._id.toString());
+    const isTaskCreater = await Task.findOne({
+        createdBy: req.user._id,
+    });
+    if (!isTaskCreater && !isAssignee) {
+        throw new ApiError(400, "Access denied");
     }
     const updatedTask = await Task.findByIdAndUpdate(taskId, {
         $set: {
-            name,
+            title,
             description,
             dueDate,
             status: status || TaskStatusEnum.TODO,
@@ -81,34 +96,30 @@ export const updateTaskDetails = asyncHandler(async (req, res) => {
         new: true,
     });
     if (!updatedTask) {
-        throw new ApiError(400, "Task does not exist");
+        throw new ApiError(404, "Task does not exist");
     }
     return res
         .status(200)
         .json(new ApiResponse(200, updatedTask, "Updated task details successfully"));
 });
-export const getAllTasks = asyncHandler(async (req, res) => {
+export const getAllProjectTasks = asyncHandler(async (req, res) => {
+    const { projectId } = req.params;
+    const existedProject = await Project.findById(projectId);
+    if (!existedProject) {
+        throw new ApiError(404, "Project ID is requied");
+    }
+    const isProjectMember = existedProject.members.some((id) => id.toString() === req.user._id.toString());
+    if (!isProjectMember) {
+        throw new ApiError(400, "Access denied");
+    }
     const tasks = await Task.aggregate([
         {
-            $lookup: {
-                from: "project",
-                localField: "_id",
-                foreignField: "project",
-                as: "project",
+            $match: {
+                projectId: new mongoose.Types.ObjectId(existedProject._id),
             },
         },
-        {
-            $unwind: "$project"
-        },
-        {
-            $match: {
-                'project.members': req.user._id
-            }
-        }
+        { $sort: { createdAt: -1 } },
     ]);
-    if (!tasks) {
-        throw new ApiError(400, "Something went wrong in getting all tasks of project");
-    }
     return res
         .status(200)
         .json(new ApiResponse(200, tasks || [], "Tasks fetched successfully"));

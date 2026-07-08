@@ -1,7 +1,7 @@
 import { z } from "zod";
-export declare const signUpSchema: z.ZodObject<{
+export declare const signupSchema: z.ZodObject<{
+    fullName: z.ZodString;
     email: z.ZodString;
     password: z.ZodString;
-    remeberMe: typeof z.optional;
 }, z.core.$strip>;
-//# sourceMappingURL=signUpSchema.d.ts.map
+//# sourceMappingURL=signupSchema.d.ts.map

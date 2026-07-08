@@ -3,7 +3,6 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { UserRolesEnum } from "../constant.js";
-import bcrypt from "bcrypt";
 import { uploadAtCloudinary } from "../utils/cloudinary.js";
 import { getLocalPath, removeLocalFile } from "../utils/helper.js";
 const generateAccessAndRefreshToken = async (userId) => {
@@ -43,7 +42,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     }
     return res
         .status(200)
-        .json(new ApiResponse(200, createdUser, "User registered successfully"));
+        .json(new ApiResponse(201, createdUser, "User registered successfully"));
 });
 export const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
@@ -68,7 +67,7 @@ export const loginUser = asyncHandler(async (req, res) => {
         .status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
-        .json(new ApiResponse(200, loggedInUser, ""));
+        .json(new ApiResponse(200, loggedInUser, "Successfully loggedIn user"));
 });
 export const logOutUser = asyncHandler(async (req, res) => {
     const userId = req.user._id;
@@ -125,5 +124,24 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
     return res
         .status(200)
         .json(new ApiResponse(200, req.user, "Current user fetch successfully"));
+});
+export const getAvailableUsers = asyncHandler(async (_, res) => {
+    const users = await User.aggregate([
+        {
+            $match: {},
+        },
+        {
+            $sort: { createdAt: -1 },
+        },
+        {
+            $project: {
+                _id: 1,
+                fullName: 1,
+            },
+        },
+    ]);
+    return res
+        .status(200)
+        .json(new ApiResponse(200, users || [], "Successfuly fetch available user"));
 });
 //# sourceMappingURL=user.controller.js.map

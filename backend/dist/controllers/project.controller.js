@@ -2,15 +2,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { UserRolesEnum } from "../constant.js";
-import bcrypt from "bcrypt";
-import { uploadAtCloudinary } from "../utils/cloudinary.js";
-import { getLocalPath, removeLocalFile } from "../utils/helper.js";
 import { Project } from "../models/project.model.js";
-import { match } from "node:assert";
 import mongoose from "mongoose";
 export const createProject = asyncHandler(async (req, res) => {
-    const { name, description, colour, membersId } = req.body;
+    const { name, description, colour, members } = req.body;
     const userId = req.user._id;
     const existedProject = await Project.findOne({
         name,
@@ -18,18 +13,19 @@ export const createProject = asyncHandler(async (req, res) => {
     if (existedProject) {
         throw new ApiError(409, "Project with this name already exist");
     }
+    const allMembers = [...new Set([userId.toString(), ...members])];
     const createdProject = await Project.create({
         name,
         description,
         colour,
         createdBy: userId,
-        members: membersId,
+        members: allMembers,
     });
     if (!createdProject) {
         throw new ApiError(500, "Something went wrong while creating new project");
     }
     return res
-        .status(200)
+        .status(201)
         .json(new ApiResponse(201, createProject, "Successfully created new project"));
 });
 export const getAllProjects = asyncHandler(async (req, res) => {

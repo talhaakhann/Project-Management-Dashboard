@@ -10,7 +10,7 @@ export declare const projectSchema: mongoose.Schema<IProject, mongoose.Model<IPr
 }, "id"> & {
     id: string;
 }, {
-    name?: mongoose.SchemaDefinitionProperty<string, IProject, mongoose.Document<unknown, {}, IProject, {
+    _id?: mongoose.SchemaDefinitionProperty<Types.ObjectId, IProject, mongoose.Document<unknown, {}, IProject, {
         id: string;
     }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
         _id: Types.ObjectId;
@@ -28,34 +28,7 @@ export declare const projectSchema: mongoose.Schema<IProject, mongoose.Model<IPr
     }, "id"> & {
         id: string;
     }>;
-    colour?: mongoose.SchemaDefinitionProperty<string, IProject, mongoose.Document<unknown, {}, IProject, {
-        id: string;
-    }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
-        _id: Types.ObjectId;
-    }> & {
-        __v: number;
-    }, "id"> & {
-        id: string;
-    }>;
-    members?: mongoose.SchemaDefinitionProperty<Types.ObjectId[], IProject, mongoose.Document<unknown, {}, IProject, {
-        id: string;
-    }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
-        _id: Types.ObjectId;
-    }> & {
-        __v: number;
-    }, "id"> & {
-        id: string;
-    }>;
-    status?: mongoose.SchemaDefinitionProperty<ProjectStatus, IProject, mongoose.Document<unknown, {}, IProject, {
-        id: string;
-    }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
-        _id: Types.ObjectId;
-    }> & {
-        __v: number;
-    }, "id"> & {
-        id: string;
-    }>;
-    _id?: mongoose.SchemaDefinitionProperty<Types.ObjectId, IProject, mongoose.Document<unknown, {}, IProject, {
+    name?: mongoose.SchemaDefinitionProperty<string, IProject, mongoose.Document<unknown, {}, IProject, {
         id: string;
     }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
         _id: Types.ObjectId;
@@ -76,7 +49,34 @@ export declare const projectSchema: mongoose.Schema<IProject, mongoose.Model<IPr
     }, "id"> & {
         id: string;
     }>;
+    status?: mongoose.SchemaDefinitionProperty<ProjectStatus, IProject, mongoose.Document<unknown, {}, IProject, {
+        id: string;
+    }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    }, "id"> & {
+        id: string;
+    }>;
+    colour?: mongoose.SchemaDefinitionProperty<string, IProject, mongoose.Document<unknown, {}, IProject, {
+        id: string;
+    }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    }, "id"> & {
+        id: string;
+    }>;
     createdBy?: mongoose.SchemaDefinitionProperty<Types.ObjectId, IProject, mongoose.Document<unknown, {}, IProject, {
+        id: string;
+    }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    }, "id"> & {
+        id: string;
+    }>;
+    members?: mongoose.SchemaDefinitionProperty<Types.ObjectId[], IProject, mongoose.Document<unknown, {}, IProject, {
         id: string;
     }, mongoose.DefaultSchemaOptions> & Omit<IProject & Required<{
         _id: Types.ObjectId;

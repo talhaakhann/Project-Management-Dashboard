@@ -1,7 +1,7 @@
 {
-  "name": "lms-backend",
+  "name": "project-management-app",
   "version": "1.0.0",
-  "description": "lms-backend",
+  "description": "project-management-app",
   "main": "index.js",
   "type": "module",
   "scripts": {
