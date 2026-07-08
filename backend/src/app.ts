@@ -37,11 +37,8 @@ app.use('/',userRouter)
 app.use('/api/projects',projectRouter)
 app.use('/api/tasks',taskRouter)
 
-app.get("/", (req, res) => {
-  res.json([
-    { id: 1, title: "Next.js" },
-    { id: 2, title: "Node.js" },
-  ]);
+app.get("/health-check", (req, res) => {
+  res.json('All working good');
 });
 
 

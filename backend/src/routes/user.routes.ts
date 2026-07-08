@@ -7,7 +7,7 @@ import { registerUser,
     getAvailableUsers
 
  } from "../controllers/user.controller.js";
-import { signupSchema } from "../Schemas/signUpSchema.js";
+import { signupSchema } from "../Schemas/signupSchema.js";
 import { loginSchema } from "../Schemas/loginSchema.js";
 import { validate } from "../Schemas/validate.js";
 import { verifyJwt } from "../middleware/auth.middleware.js";

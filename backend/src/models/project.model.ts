@@ -14,8 +14,8 @@ export const projectSchema = new Schema<IProject>(
       type: String,
       required: true,
     },
-    thumbnail:{
-        type: {
+    thumbnail: {
+      type: {
         url: String,
         localPath: String,
       },
@@ -32,9 +32,13 @@ export const projectSchema = new Schema<IProject>(
     },
     colour: {
       type: String,
-      enum:AvailableProjectColour,
-      default:AvailableProjectColour.BLUE,
-      required: true
+      enum: AvailableProjectColour,
+      default: AvailableProjectColour.BLUE,
+      required: true,
+    },
+    createdBy: {
+      type: Types.ObjectId,
+      ref: "User",
     },
     members: [
       {

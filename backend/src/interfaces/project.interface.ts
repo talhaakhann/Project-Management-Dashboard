@@ -8,5 +8,6 @@ export interface IProject extends Document{
     thumbnail?:{ url: String; localPath: String };
     status: ProjectStatus;
     colour:string;
+    createdBy:Types.ObjectId;
     members:Types.ObjectId[];
 }

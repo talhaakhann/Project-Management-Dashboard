@@ -1,12 +1,13 @@
 import { Document, Types } from "mongoose";
 
 export interface ITask extends Document {
-  name: string;
+  title: string;
   description: string;
   priority:string;
   status: string;
   dueDate: Date;
+  createdBy:Types.ObjectId;
   tags:string[]
-  project: Types.ObjectId;
+  projectId: Types.ObjectId;
   assignees: Types.ObjectId[];
 }

@@ -6,7 +6,6 @@ import type { Request, Response } from "express";
 import { UserRolesEnum } from "../constant.js";
 import { uploadAtCloudinary } from "../utils/cloudinary.js";
 import { getLocalPath, removeLocalFile } from "../utils/helper.js";
-import type { IUser } from "../interfaces/user.interface.js";
 import type { Types } from "mongoose";
 
 const generateAccessAndRefreshToken = async (userId: Types.ObjectId) => {
@@ -60,7 +59,7 @@ export const registerUser = asyncHandler(
     return res
       .status(200)
       .json(
-        new ApiResponse<IUser>(
+        new ApiResponse(
           201,
           createdUser,
           "User registered successfully",
@@ -185,7 +184,7 @@ export const getCurrentUser = asyncHandler(
 );
 
 export const getAvailableUsers = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (_, res: Response) => {
     const users = await User.aggregate([
       {
         $match: {},

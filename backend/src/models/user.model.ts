@@ -38,10 +38,7 @@ const userSchema = new Schema<IUser>(
       },
     },
     password: {
-      type: String,
-      required: function () {
-        return this.loginType === "EMAIL_PASSWORD";
-      },
+      type: String
     },
     role: {
       type: String,
@@ -60,43 +57,51 @@ const userSchema = new Schema<IUser>(
   { timestamps: true },
 );
 
-userSchema.pre('save', async function (next:NextFunction) {
-  if (!this.isModified("password")) return next;
-  this.password = await bcrypt.hash(this.password, 10);
-  next;
+userSchema.pre("save", async function () {
+    if (!this.isModified("password")) return;
+
+    this.password = await bcrypt.hash(this.password, 10);
 });
 
 userSchema.methods.isPasswordValid=async function(password:string){
   return await bcrypt.compare(password,this.password)
 }
 
+const ACCESS_TOKEN_EXPIRY =
+  process.env.ACCESS_TOKEN_EXPIRY ?? "15m";
+
 userSchema.methods.generateAccessToken = function () {
+  const accessTokenExpiry: jwt.SignOptions["expiresIn"] = 
+  (process.env.ACCESS_TOKEN_EXPIRY as jwt.SignOptions["expiresIn"]) ?? "1d";
+
   return jwt.sign(
     {
       _id: this._id,
       email: this.email,
-      password: this.password,
       fullName: this.fullName,
     },
-    process.env.ACCESS_TOKEN_SECRET!,
+    process.env.ACCESS_TOKEN_SECRET as string ,
     {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY!,
+      expiresIn: accessTokenExpiry,
     },
   );
 };
 
-userSchema.methods.generaterefreshToken = function () {
+
+
+userSchema.methods.generateRefreshToken = function () {
+  const refreshTokenExpiry: jwt.SignOptions["expiresIn"] = 
+  (process.env.ACCESS_TOKEN_EXPIRY as jwt.SignOptions["expiresIn"]) ?? "30d";
   return jwt.sign(
     {
 
       _id: this._id,
       email: this.email,
-      password: this.password,
       fullName: this.fullName,
     },
     process.env.REFRESH_TOKEN_SECRET!,
     {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRY!,
+      expiresIn:refreshTokenExpiry,
     },
   );
 };

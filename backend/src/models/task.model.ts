@@ -3,7 +3,7 @@ import type { ITask } from "../interfaces/task.interface.js";
 
 export const taskSchema = new Schema<ITask>(
   {
-    name: {
+    title: {
       type: String,
       unique: true,
       required: true,
@@ -25,10 +25,11 @@ export const taskSchema = new Schema<ITask>(
       required: true,
       default: Date.now(),
     },
-    tags:{
-      type:[String]
+    createdBy:{
+      type: Schema.Types.ObjectId,
+        ref: "User",
     },
-    project: {
+    projectId: {
       type: Schema.Types.ObjectId,
       ref: "Project",
       required: true,
@@ -39,6 +40,9 @@ export const taskSchema = new Schema<ITask>(
         ref: "User",
       },
     ],
+    tags:{
+      type:[String]
+    },
   },
   { timestamps: true },
 );
