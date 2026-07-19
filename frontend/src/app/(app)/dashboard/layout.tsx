@@ -2,13 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../../globals.css";
 import AuthInitializer from "./AuthInitializer";
-import { DashboardSidebar } from "@/components/dashboard/sidebar";
-import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardContent } from "@/components/dashboard/content";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from '@/components/app-sidebar';
 import { SiteHeader } from "@/components/site-header";
-
+import { DashboardHeader } from "@/components/dashboard/header";
 // import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
@@ -22,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Taskplus Dashboard - Square UI",
-  description: "Taskplus dashboard with tasks and projects management",
+  title: "Project hub ",
+  description: "Personalized dashboard with tasks and projects management",
 };
 
 export default function RootLayout({
@@ -33,26 +30,25 @@ export default function RootLayout({
 }>) {
   return (
     <SidebarProvider
-         style={
-           {
-             "--sidebar-width": "calc(var(--spacing) * 72)",
-             "--header-height": "calc(var(--spacing) * 12)",
-           } as React.CSSProperties
-         }
-       >
-         <AppSidebar variant="inset" />
-         <SidebarInset>
-           <div className=" overflow-hidden lg:p-2 w-full">
-             
-             <SiteHeader />
-             
-             <AuthInitializer>
-               {children}
-             </AuthInitializer>
-            
-             </div>
-         
-         </SidebarInset>
-       </SidebarProvider>
+  style={
+    {
+     "--sidebar-width": "calc(var(--spacing) * 56)", // 14rem / 224px
+      "--header-height": "calc(var(--spacing) * 12)",
+    } as React.CSSProperties
+  }
+>
+  <AppSidebar variant="inset" />
+  
+    <div className="flex flex-col h-svh w-full lg:p-2">
+      <div className="flex flex-col flex-1 min-h-0 w-full lg:border lg:rounded-md overflow-hidden bg-background">
+        <DashboardHeader />
+
+        <div className="flex-1 min-h-0 overflow-y-auto ">
+          <AuthInitializer>{children}</AuthInitializer>
+        </div>
+      </div>
+    </div>
+
+</SidebarProvider>
   );
 }
