@@ -9,3 +9,9 @@ export interface User {
   role: string;
   isActive: boolean;
 }
+
+import {z} from 'zod'
+
+export const changeAvatarSchema=z.object({
+    avatar:z.file()
+})
