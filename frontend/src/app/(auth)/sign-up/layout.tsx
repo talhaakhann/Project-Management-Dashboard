@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "../../globals.css";
-import { cn } from "@/lib/utils";
 import { GalleryVerticalEndIcon } from "lucide-react";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -37,7 +36,7 @@ export default function RootLayout({
       </div>
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <a href="#" className="flex items-center gap-2 font-medium">
+          <a href="/" className="flex items-center gap-2 font-medium">
             <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEndIcon className="size-4" />
             </div>

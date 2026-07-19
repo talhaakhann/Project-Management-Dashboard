@@ -11,10 +11,8 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
 import { signupSchema } from "@/Schemas/signupSchema";
 import * as z from "zod"
 import { Controller, useForm } from "react-hook-form"
@@ -22,43 +20,11 @@ import { toast } from "sonner"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
-import ApiResponse from "@/types/ApiResponse";
+import ApiResponse from "@/types/ApiResponse"
 import { AxiosError } from "axios";
 import { Checkbox } from "@/components/ui/checkbox";
+import { User } from "@/Schemas/user.schema";
 
-
-// interface SocialProvider {
-//   label: string;
-//   icon: React.ReactNode;
-//   href?: string;
-// }
-
-// interface Auth1Props {
-//   heading?: string;
-//   description?: string;
-//   socialProviders?: SocialProvider[];
-//   forgotPasswordLink?: {
-//     label: string;
-//     href: string;
-//   };
-//   signupPrompt?: {
-//     text: string;
-//     linkLabel: string;
-//     href: string;
-//   };
-//   labels?: {
-//     divider?: string;
-//     email?: string;
-//     emailPlaceholder?: string;
-//     password?: string;
-//     passwordPlaceholder?: string;
-//     rememberMe?: string;
-//     submit?: string;
-//     legal?: string;
-//     passwordToggle?: string;
-//   };
-//   className?: string;
-// }
 
 const GoogleIcon = (
   <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true">
@@ -90,36 +56,6 @@ const AppleIcon = (
 const legalText = 'By signing in, you agree to our <a href="https://beste.co">Terms of Service</a> and <a href="https://beste.co">Privacy Policy</a>.'
 
 
-// export const auth1Demo: Auth1Props = {
-//   heading: "Welcome back",
-//   description: "Sign in to your account to continue",
-//   socialProviders: [
-//     { label: "Continue with Google", icon: GoogleIcon, href: "https://beste.co" },
-//     { label: "Continue with Apple", icon: AppleIcon, href: "https://beste.co" },
-//   ],
-//   forgotPasswordLink: {
-//     label: "Forgot password?",
-//     href: "https://beste.co",
-//   },
-//   signupPrompt: {
-//     text: "Don't have an account?",
-//     linkLabel: "Sign up",
-//     href: "https://beste.co",
-//   },
-//   labels: {
-//     divider: "or continue with email",
-//     email: "Email",
-//     emailPlaceholder: "you@example.com",
-//     password: "Password",
-//     passwordPlaceholder: "Enter your password",
-//     rememberMe: "Remember me",
-//     submit: "Sign in",
-//     legal:
-//       'By signing in, you agree to our <a href="https://beste.co">Terms of Service</a> and <a href="https://beste.co">Privacy Policy</a>.',
-//     passwordToggle: "Toggle password visibility",
-//   },
-// };
-
 export default function SignUpPage() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -136,38 +72,20 @@ export default function SignUpPage() {
     }
   })
 
-  const termsLabel = 'I agree to the <a href="https://beste.co">Terms of Service</a> and <a href="https://beste.co">Privacy Policy</a>'
+  const termsLabel = 'I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>'
 
   const onSubmit = async (data: z.infer<typeof signupSchema>) => {
-    console.log("fullname", data.fullName);
-    console.log("email", data.email);
-    console.log("password", data.password);
-
-    console.log("hello");
 
     setIsSubmitting(true)
     try {
       console.log("hello1");
 
-      const response = await api.post('/sign-up', data)
+      const response = await api.post<ApiResponse<User>>('/sign-up', data)
       console.log(response);
-
-      // if (response instanceof ApiResponse && response.success) {
-      //   console.log("hello 2");
 
       toast.message(response.data.message)
       router.replace("/sign-in")
-      // } else if (response instanceof ApiResponse) {
-      //   console.log("hello 3");
-
-      //   /* 200 With error */
-      //   toast.error(response.message);
-      // } else {
-      //   /* ApiError Object */
-      //   return response;
-      //   console.log("hello 4");
-
-      // }
+    
     } catch (error) {
       const AxiosError = error as AxiosError<ApiResponse<unknown>>
       let errorMessage = AxiosError.response?.data.message
@@ -180,9 +98,7 @@ export default function SignUpPage() {
     }
   }
 
-
   return (
-
     <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center gap-1 text-center">
         <h1 className="text-2xl font-bold">Create your account</h1>

@@ -4,7 +4,7 @@ import { LoginForm } from "@/components/login-form"
 import { FieldGroup, FieldDescription, FieldLabel, Field, FieldError } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Eye, EyeOff, GalleryVerticalEndIcon, Loader2 } from "lucide-react"
+import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { useForm, Controller } from "react-hook-form"
 import { useState } from "react"
 import { signInSchema } from "@/Schemas/signInSchema"
@@ -12,13 +12,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useRouter } from "next/navigation"
 import api from "@/lib/axios"
-import ApiResponse from "@/types/ApiResponse"
 import { toast } from "sonner"
 import { useAppDispatch } from "@/store/hook"
 import { AxiosError } from "axios"
 import { Checkbox } from "@/components/ui/checkbox";
 import { login } from "@/store/authSlice"
 import { store } from "@/store/authStore"
+import  ApiResponse from "@/types/ApiResponse"
+import { User } from "@/Schemas/user.schema"
 
 
 export default function LoginPage() {
@@ -27,7 +28,7 @@ export default function LoginPage() {
   const dispatch = useAppDispatch()
   const router = useRouter()
 
-  const legal = 'By signing in, you agree to our <a href="https://beste.co">Terms of Service</a> and <a href="https://beste.co">Privacy Policy</a>.'
+  const legal = 'By signing in, you agree to our <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>.'
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -40,30 +41,20 @@ export default function LoginPage() {
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     setIsSubmitting(true)
-    console.log("fullname", data.email);
-    console.log("fullname", data.password);
-    console.log("fullname", data.rememberMe);
-
     try {
-      const response = await api.post('/sign-in', data)
-      console.log("Response", response.data.data);
+
+      const response = await api.post<ApiResponse<User>>('/sign-in', data)
 
       dispatch(login(response.data.data))
-
-      const user = response.data.data;
-
-      console.log(JSON.stringify(user).length);
-      console.log(JSON.stringify(store.getState()).length);
-
-      toast.message(response.data.message)
       router.replace("/dashboard")
+      
+      toast.message(response.data.message)
     } catch (error) {
       const AxiosError = error as AxiosError<ApiResponse<unknown>>
-      console.log(AxiosError);
 
       let errorMessage = AxiosError.response?.data.message
-      console.log(errorMessage);
-
+     console.log(errorMessage);
+     
       toast("Signup Failed",
         {
           description: errorMessage
