@@ -1,13 +1,14 @@
-export  enum TaskPriorityEnum{
-    LOW='Low',
-    MEDUIM='Medium',
-    HIGH='High',
-    URGENT='Urgent'
+export enum TaskPriorityEnum{
+    LOW='low',
+    MEDUIM='medium',
+    HIGH='high',
+    URGENT='urgent'
 }
 
 export enum TaskStatusEnum {
-  TODO = "Todo",
-  IN_PROGRESS = "In Progress",
-  DONE = "Done",
-  CANCELLED="Cancelled"
+  ALL="all",
+  TODO = "todo",
+  IN_PROGRESS = "in_progress",
+  DONE = "done",
+  CANCELLED="cancelled"
 }

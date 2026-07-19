@@ -1,12 +1,40 @@
-export enum AvailableProjectColour {
-  BLUE = "#3b82f6",
-  PINK = "#ec4899",
-  GREEN = "#22c55e",
-  ORANGE = "#f97316",
-  PURPLE = "#a855f7",
-}
+export type Project = {
+  id: string;
+  name: string;
+  description: string;
+  dueDate:Date;
+  status: ProjectStatus;
+  colour: string;
+  members: {
+    id: string;
+    fullName: string;
+    avatar?: {
+      url: string;
+      localPath: string;
+    };
+  }[];
+  createdBy: {
+    id: string;
+    fullName: string;
+    avatar?: {
+      url: string;
+      localPath: string;
+    };
+  };
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+
 export enum ProjectStatus {
+  ALL="all",
   ACTIVE = "active",
   ARCHIVED = "archived",
   COMPLETED = "completed",
+}
+
+
+export type availableProjects={
+  id:string;
+  name:string;
 }
