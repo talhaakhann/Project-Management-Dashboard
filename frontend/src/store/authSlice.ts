@@ -1,4 +1,3 @@
-import React from "react";
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "@/Schemas/user.schema";
 import { PayloadAction } from "@reduxjs/toolkit";
@@ -24,9 +23,12 @@ export const authSlice = createSlice({
     logout(state) {
       state.isLoggedIn = false;
     },
+    updateUserDetails(state,action:PayloadAction<User>){
+      state.user=action.payload;
+    }
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout,updateUserDetails } = authSlice.actions;
 
 export default authSlice.reducer;
