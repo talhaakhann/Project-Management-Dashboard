@@ -42,6 +42,10 @@ app.use(cookieParser())
 
 app.use('/',userRouter)
 
+app.use("/health-check", (req, res) => {
+  res.json({ status: "OK" });
+});
+
 app.use('/api/projects',projectRouter)
 app.use('/api/tasks',taskRouter)
 app.use('/api/dashboard',dashboardRouter)
