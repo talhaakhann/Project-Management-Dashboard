@@ -43,7 +43,7 @@ export default function LoginPage() {
     setIsSubmitting(true)
     try {
 
-      const response = await api.post<ApiResponse<User>>('/sign-in', data)
+      const response = await api.post<ApiResponse<User>>('/api/auth/sign-in', data)
        console.log(response);
       dispatch(login(response.data.data))
       router.replace("/dashboard")
