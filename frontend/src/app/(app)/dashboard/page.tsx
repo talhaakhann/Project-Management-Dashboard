@@ -5,7 +5,7 @@ import ApiResponse from "@/types/ApiResponse";
 import { ProjectStatus } from "@/types/enums/project.enum";
 
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 
@@ -63,7 +63,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     setIsLoading(true)
-    const loadDashboard = async () => {
+    const loadDashboard = useCallback(async () => {
       try {
         const [statsRes, tasksRes, summaryRes, projectRes] = await Promise.all([
           api.get("/api/dashboard/stats"),
@@ -82,7 +82,7 @@ export default function DashboardPage() {
       } finally {
         setIsLoading(false);
       }
-    }
+    },[])
     loadDashboard()
   }, [])
 

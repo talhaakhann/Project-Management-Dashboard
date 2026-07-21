@@ -163,7 +163,7 @@ export function TodaysTasks({ todayTasks }: todayTasksProps) {
                   projectColorMap[task.projectColor] ?? projectColorMap.blue
                 )}
               >
-                {task.title}
+                {task.projectName}
               </div>
               <span className="text-xs text-muted-foreground ml-auto">
                 Due: {formatDate(task.dueDate)}

@@ -26,7 +26,7 @@ export default function OnboardingSplit() {
             <h1 className="mb-5 text-4xl font-semibold leading-[1.1] tracking-tight text-white md:text-[2.75rem]">
               Welcome to
               <br />
-              Project hub
+              Planeflow
             </h1>
 
             {/* Description */}
@@ -86,9 +86,8 @@ export default function OnboardingSplit() {
 
          <div className="relative hidden bg-muted lg:block">
         <img
-
-          alt="Image"
-          src="https://picsum.photos/seed/projecthub-kanban/980/1000"
+          alt="Planeflow product preview"
+          src="https://picsum.photos/seed/planeflow-kanban/980/1000"
         />
       </div>
         </div>
@@ -96,4 +95,3 @@ export default function OnboardingSplit() {
     </div>
   );
 }
-              

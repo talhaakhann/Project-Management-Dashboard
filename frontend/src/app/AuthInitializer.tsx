@@ -4,7 +4,7 @@ import { login, logout, setLoading } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { DashboardContentSkeleton } from '@/components/skeletons/dashboard-content-skeleton';
+import { AppLoader } from '@/components/skeletons/App-loader';
 
 function AuthInitializer({ children }:
     { children: React.ReactNode }) {
@@ -13,7 +13,7 @@ function AuthInitializer({ children }:
 
 
     useEffect(() => {
-         console.log("AuthInitializer mounted");
+    
         async function reloadUser() {
             try {
                 const res = await api.get("/get-user")
@@ -35,7 +35,7 @@ function AuthInitializer({ children }:
     }, [dispatch])
 
     if (loading) {
-        return <DashboardContentSkeleton />
+        return <AppLoader />
     }
 
     return (

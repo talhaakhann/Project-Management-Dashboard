@@ -397,13 +397,6 @@ function TaskItem({
                                     Mark as Done
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                    onClick={() => onDelete?.(task.id)}
-                                    variant="destructive"
-                                >
-                                    <X className="size-4" />
-                                    Delete
-                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

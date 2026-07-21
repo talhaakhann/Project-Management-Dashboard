@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/store/hook";
-import { DashboardContentSkeleton } from "@/components/skeletons/dashboard-content-skeleton";
+import AuthInitializerSkeleton from "@/components/skeletons/auth-initializer-skeleton";
 
 export default function DashboardGuard({
   children,
@@ -23,7 +23,7 @@ export default function DashboardGuard({
   }, [loading, isLoggedIn]);
 
   if (loading) {
-    return <DashboardContentSkeleton />;
+    return <AuthInitializerSkeleton />;
   }
 
   if (!isLoggedIn) {

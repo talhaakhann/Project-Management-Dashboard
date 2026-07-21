@@ -24,7 +24,6 @@ function TaskIdPage() {
       try {
         const response = await api.get(`/api/tasks/${taskId}`)
         setTask(response.data.data)
-        toast.message(response.data.message)
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse<unknown>>;
         const errorMessage = axiosError.response?.data?.message;

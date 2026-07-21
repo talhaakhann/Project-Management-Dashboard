@@ -24,11 +24,9 @@ function ProjectIdPage() {
       try {
         const response = await api.get(`/api/projects/${projectId}`)
         setProject(response.data.data)
-        toast.message(response.data.message)
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse<unknown>>;
         const errorMessage = axiosError.response?.data?.message;
-        console.log(errorMessage);
         toast.error(errorMessage);
       } finally {
         setIsLoading(false)

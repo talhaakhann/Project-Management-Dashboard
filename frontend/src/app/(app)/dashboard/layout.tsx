@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Project hub ",
+  title: "Dashboard | PlaneFlow",
   description: "Personalized dashboard with tasks and projects management",
 };
 
