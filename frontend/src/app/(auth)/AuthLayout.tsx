@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/store/hook";
-import { AppLoader } from "@/components/skeletons/app-loader";
+import { AppLoader } from "@/components/skeletons/App-loader";
 
 export default function AuthLayout({
   children,
