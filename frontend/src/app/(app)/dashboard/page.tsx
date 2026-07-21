@@ -71,7 +71,6 @@ export default function DashboardPage() {
           api.get("/api/dashboard/welcome-summary"),
           api.get("/api/dashboard/projects")
         ])
-        console.log("stat res", tasksRes.data.data);
 
         setStats(statsRes.data.data);
         setTodayTasks(tasksRes.data.data);

@@ -1,62 +1,81 @@
-import { logout } from "@/store/authSlice";
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 import { store } from "@/store/authStore";
-import axios from "axios";
+import { logout } from "@/store/authSlice";
 
 const api = axios.create({
-  baseURL: "/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
   timeout: 10000,
 });
 
-
 let isRefreshing = false;
+
 let failedQueue: {
-  resolve: (value?: unknown) => void;
+  resolve: () => void;
   reject: (reason?: unknown) => void;
 }[] = [];
 
-const processQueue = (error: unknown, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
+const processQueue = (error?: unknown) => {
+  failedQueue.forEach((promise) => {
     if (error) {
-      prom.reject(error);
+      promise.reject(error);
     } else {
-      prom.resolve(token);
+      promise.resolve();
     }
   });
+
   failedQueue = [];
 };
 
 api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  (response: AxiosResponse) => response,
 
-    
-    if (error.response?.status === 401 && !originalRequest._retry) {
+  async (error: AxiosError) => {
+    const originalRequest = error.config as
+      | (InternalAxiosRequestConfig & { _retry?: boolean })
+      | undefined;
+
+    if (!originalRequest) {
+      return Promise.reject(error);
+    }
+
+    const status = error.response?.status;
+
+    const url = originalRequest.url ?? "";
+
+    const shouldSkipRefresh =
+      url.includes("/sign-in") ||
+      url.includes("/sign-up") ||
+      url.includes("/refresh-token");
+
+    if (
+      status === 401 &&
+      !originalRequest._retry &&
+      !shouldSkipRefresh
+    ) {
       if (isRefreshing) {
-        
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        })
-          .then(() => api(originalRequest))
-          .catch((err) => Promise.reject(err));
+        }).then(() => api(originalRequest));
       }
 
       originalRequest._retry = true;
       isRefreshing = true;
 
       try {
-        
-        await api.post("/api/auth/refresh-token");
+        await api.post("/refresh-token");
 
-        processQueue(null);
+        processQueue();
+
         return api(originalRequest);
       } catch (refreshError) {
-        processQueue(refreshError, null);
+        processQueue(refreshError);
 
-       
-        store.dispatch(logout()); 
-        window.location.href = "/sign-up";
+        store.dispatch(logout());
 
         return Promise.reject(refreshError);
       } finally {
@@ -67,5 +86,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-export default api;
 
+export default api;

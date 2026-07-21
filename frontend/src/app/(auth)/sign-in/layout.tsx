@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "../../globals.css";
-
 import { GalleryVerticalEndIcon } from "lucide-react";
+import AuthLayout from "../AuthLayout";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -25,8 +25,12 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>)
+{
+
   return (
+    <AuthLayout>
+
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
@@ -51,5 +55,6 @@ export default function RootLayout({
         />
       </div>
     </div>
+    </AuthLayout>
   );
 }

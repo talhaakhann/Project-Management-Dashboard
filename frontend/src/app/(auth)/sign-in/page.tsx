@@ -1,5 +1,4 @@
 "use client"
-
 import { LoginForm } from "@/components/login-form"
 import { FieldGroup, FieldDescription, FieldLabel, Field, FieldError } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
@@ -43,7 +42,7 @@ export default function LoginPage() {
     setIsSubmitting(true)
     try {
 
-      const response = await api.post<ApiResponse<User>>('/api/auth/sign-in', data)
+      const response = await api.post<ApiResponse<User>>('/sign-in', data)
        console.log(response);
       dispatch(login(response.data.data))
       router.replace("/dashboard")

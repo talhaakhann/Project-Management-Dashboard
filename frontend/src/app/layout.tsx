@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Providers from "./providers";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner"
+import AuthInitializer from "./AuthInitializer";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -40,8 +41,10 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
           >
-            {children}
-            <Toaster/>
+            <AuthInitializer>
+              {children}
+            </AuthInitializer>
+            <Toaster />
           </ThemeProvider>
         </Providers>
       </body>

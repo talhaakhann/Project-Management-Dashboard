@@ -78,9 +78,8 @@ export default function SignUpPage() {
 
     setIsSubmitting(true)
     try {
-      console.log("hello1");
 
-      const response = await api.post<ApiResponse<User>>('/api/auth/sign-up', data)
+      const response = await api.post<ApiResponse<User>>('/sign-up', data)
 
       toast.message(response.data.message)
       router.replace("/sign-in")
