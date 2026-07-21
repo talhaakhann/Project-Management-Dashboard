@@ -51,7 +51,7 @@ export function NavUser({
   const logoutHandler = async () => {
     setIsSubmitting
     try {
-      const response = await api.get("/logout")
+      const response = await api.post("/logout")
       dispatch(logout())
       router.replace("/sign-in")
       toast.message(response.data.message)
