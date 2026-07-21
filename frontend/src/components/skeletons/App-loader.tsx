@@ -7,7 +7,7 @@ export function AppLoader() {
                 <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-semibold">
                     P
                 </div>
-                <span className="text-lg font-semibold tracking-tight">Project Hub</span>
+                <span className="text-lg font-semibold tracking-tight">Planeflow</span>
             </div>
             <Loader2 className="size-5 animate-spin text-muted-foreground" />
         </div>

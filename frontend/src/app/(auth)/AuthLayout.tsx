@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/store/hook";
-import { AppLoader } from "@/components/skeletons/App-loader";
+import { AppLoader } from "@/components/skeletons/app-loader";
 
 export default function AuthLayout({
   children,
@@ -23,7 +23,7 @@ export default function AuthLayout({
   }, [loading, isLoggedIn]);
 
   if (loading) {
-    return <AppLoader/>; 
+    return <AppLoader />;
   }
 
   if (isLoggedIn) {
