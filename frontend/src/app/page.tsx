@@ -87,7 +87,7 @@ export default function OnboardingSplit() {
          <div className="relative hidden bg-muted lg:block">
         <img
           alt="Planeflow product preview"
-          src="https://picsum.photos/seed/planeflow-kanban/980/1000"
+          src="https://picsum.photos/seed/projecthub-kanban/980/1000"
         />
       </div>
         </div>

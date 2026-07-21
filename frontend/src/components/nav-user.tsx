@@ -52,9 +52,8 @@ export function NavUser({
     setIsSubmitting
     try {
       const response = await api.get("/logout")
-  
       dispatch(logout())
-      router.replace("/")
+      router.replace("/sign-in")
       toast.message(response.data.message)
     } catch (error) {
       const AxiosError = error as AxiosError<ApiResponse<unknown>>
