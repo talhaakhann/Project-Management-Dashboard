@@ -1,4 +1,5 @@
 import multer from "multer";
+import os from "os";
 import type { Request } from "express";
 
 const storage = multer.diskStorage({
@@ -7,7 +8,7 @@ const storage = multer.diskStorage({
     file: Express.Multer.File,
     cb
   ) => {
-    cb(null, "./public/temp");
+    cb(null, os.tmpdir());
   },
 
   filename: (
@@ -15,10 +16,14 @@ const storage = multer.diskStorage({
     file: Express.Multer.File,
     cb
   ) => {
-    cb(null, file.originalname);
+    const uniqueName = `${Date.now()}-${file.originalname}`;
+    cb(null, uniqueName);
   },
 });
 
 export const upload = multer({
   storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 MB
+  },
 });

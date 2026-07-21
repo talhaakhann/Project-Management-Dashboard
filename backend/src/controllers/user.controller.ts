@@ -167,6 +167,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const logOutUser = asyncHandler(async (req: Request, res: Response) => {
+  console.log("Logout controller reached");
+
   const userId = req.user._id;
 
   const user = await User.findByIdAndUpdate(userId, {
@@ -179,14 +181,15 @@ export const logOutUser = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(404, "User not found");
   }
 
-  const option = {
+  const cookieOptions = {
     httpOnly: true,
     secure: true,
+    sameSite: "none" as const,
   };
   return res
     .status(200)
-    .clearCookie("accessToken", option)
-    .clearCookie("refreshToken", option)
+    .clearCookie("accessToken", cookieOptions)
+    .clearCookie("refreshToken", cookieOptions)
     .json(new ApiResponse(200, {}, "User logout"));
 });
 

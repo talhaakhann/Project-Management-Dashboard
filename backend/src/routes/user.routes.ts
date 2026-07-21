@@ -17,7 +17,7 @@ const router=Router()
 
 router.route('/sign-up').post(validate(signUpSchema),registerUser)
 router.route('/sign-in').post(validate(signInSchema),loginUser)
-router.route('/logout').get(verifyJwt,logOutUser)
+router.route('/logout').post(verifyJwt,logOutUser)
 router.route('/refresh-token').get(verifyJwt,refreshAccessToken)
 router.route('/change-avatar').post(verifyJwt,upload.single("avatar"),changeUserAvatar)
 router.route('/get-user').get(verifyJwt,getCurrentUser)
