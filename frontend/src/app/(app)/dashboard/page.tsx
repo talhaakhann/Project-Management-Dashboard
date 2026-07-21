@@ -63,7 +63,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     setIsLoading(true)
-    const loadDashboard = useCallback(async () => {
+    const loadDashboard = async () => {
       try {
         const [statsRes, tasksRes, summaryRes, projectRes] = await Promise.all([
           api.get("/api/dashboard/stats"),
@@ -82,7 +82,7 @@ export default function DashboardPage() {
       } finally {
         setIsLoading(false);
       }
-    },[])
+    }
     loadDashboard()
   }, [])
 
